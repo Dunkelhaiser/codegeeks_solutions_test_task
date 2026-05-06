@@ -3,7 +3,8 @@ import { db } from "../db";
 import { eventsTable } from "../db/schema";
 import { CreateEventDto } from "./dto/createEvent.dto";
 import { UpdateEventDto } from "./dto/updateEvent.dto";
-import { eq } from "drizzle-orm";
+import { eq, asc, desc } from "drizzle-orm";
+import { GetEventsQueryDto } from "./dto/getEventsQuery.dto";
 
 @Injectable()
 export class EventsService {
@@ -12,8 +13,9 @@ export class EventsService {
         return event;
     }
 
-    async findAll() {
-        const events = await db.select().from(eventsTable);
+    async findAll(query: GetEventsQueryDto) {
+        const order = query.order === 'desc' ? desc : asc;
+        const events = await db.select().from(eventsTable).orderBy(order(eventsTable[query.sortBy]));
         
         return events;
     }

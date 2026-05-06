@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
 import { CreateEventDto } from "./dto/createEvent.dto";
 import { UpdateEventDto } from "./dto/updateEvent.dto";
 import { GetEventDto } from "./dto/getEvent.dto";
+import { GetEventsQueryDto } from "./dto/getEventsQuery.dto";
 import { EventsService } from "./events.service";
 
 @Controller("events")
@@ -14,8 +15,8 @@ export class EventsController {
     }
 
     @Get()
-    findAll() {
-        return this.eventsService.findAll();
+    findAll(@Query() query: GetEventsQueryDto) {
+        return this.eventsService.findAll(query);
     }
 
     @Get(':id')
