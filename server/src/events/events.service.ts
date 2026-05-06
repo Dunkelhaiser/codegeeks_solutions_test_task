@@ -34,6 +34,15 @@ export class EventsService {
         return events;
     }
 
+    async findAllCategories() {
+        const categories = await db.select({
+            id: categoriesTable.id,
+            name: categoriesTable.name,
+        }).from(categoriesTable);
+        
+        return categories;
+    }
+
     async findOne(id: string) {
         const event = await db.select({
             id: eventsTable.id,
