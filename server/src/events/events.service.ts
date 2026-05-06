@@ -34,7 +34,9 @@ export class EventsService {
         return updatedEvent;
     }
 
-    remove(id: string) {
-        return `This action removes a #${id} event`;
+    async remove(id: string) {
+        const [event] = await db.delete(eventsTable).where(eq(eventsTable.id, id)).returning();
+        
+        return event;
     }
 }
