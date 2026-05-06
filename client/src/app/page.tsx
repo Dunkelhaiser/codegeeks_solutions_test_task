@@ -6,17 +6,26 @@ import { getCategories, getEvents } from "@/api/events";
 import EventCard from "@/components/EventCard";
 import SortControls from "@/components/SortControls";
 import FilterControls from "@/components/FilterControls";
+import PaginationControls from "@/components/PaginationControls";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 
 interface HomeProps {
-    searchParams: Promise<{ sortBy?: string; order?: string; category?: string }>;
+    searchParams: Promise<{ sortBy?: string; order?: string; category?: string; page?: string; limit?: string }>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-    const { sortBy = "date", order = "asc", category } = await searchParams;
-    const [events, categories] = await Promise.all([getEvents(sortBy, order, category), getCategories()]);
+    const { sortBy = "date", order = "asc", category, page = "1", limit = "9" } = await searchParams;
+    const currentPage = parseInt(page);
+    const pageLimit = parseInt(limit);
+
+    const [{ events, total }, categories] = await Promise.all([
+        getEvents(sortBy, order, category, currentPage, pageLimit),
+        getCategories(),
+    ]);
+
+    const totalPages = Math.ceil(total / pageLimit);
 
     return (
         <Box
@@ -69,6 +78,8 @@ export default async function Home({ searchParams }: HomeProps) {
                         </Grid>
                     ))}
                 </Grid>
+
+                <PaginationControls totalPages={totalPages} currentPage={currentPage} />
                 
                 {events.length === 0 && (
                     <Box sx={{ textAlign: "center", py: 12 }}>

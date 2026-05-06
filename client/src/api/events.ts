@@ -7,10 +7,23 @@ export interface Category {
     name: string;
 }
 
-export const getEvents = async (sortBy: string = "date", order: string = "asc", category?: string): Promise<Event[]> => {
+export interface GetEventsResponse {
+    events: Event[];
+    total: number;
+}
+
+export const getEvents = async (
+    sortBy: string = "date",
+    order: string = "asc",
+    category?: string,
+    page: number = 1,
+    limit: number = 10
+): Promise<GetEventsResponse> => {
     const url = new URL(`${BACKEND_URL}/events`);
     url.searchParams.append("sortBy", sortBy);
     url.searchParams.append("order", order);
+    url.searchParams.append("page", page.toString());
+    url.searchParams.append("limit", limit.toString());
     if (category) {
         url.searchParams.append("category", category);
     }

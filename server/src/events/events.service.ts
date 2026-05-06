@@ -3,7 +3,7 @@ import { db } from "../db";
 import { categoriesTable, eventsTable } from "../db/schema";
 import { CreateEventDto } from "./dto/createEvent.dto";
 import { UpdateEventDto } from "./dto/updateEvent.dto";
-import { eq, asc, desc } from "drizzle-orm";
+import { eq, asc, desc, count } from "drizzle-orm";
 import { GetEventsQueryDto } from "./dto/getEventsQuery.dto";
 
 @Injectable()
@@ -15,6 +15,7 @@ export class EventsService {
 
     async findAll(query: GetEventsQueryDto) {
         const order = query.order === 'desc' ? desc : asc;
+        const offset = (query.page - 1) * query.limit;
         
         let q = db.select({
             id: eventsTable.id,
@@ -25,13 +26,22 @@ export class EventsService {
             category: categoriesTable.name,
         }).from(eventsTable).innerJoin(categoriesTable, eq(eventsTable.categoryId, categoriesTable.id)).$dynamic();
         
+        let countQ = db.select({ value: count() }).from(eventsTable).$dynamic();
+
         if (query.category) {
             q = q.where(eq(eventsTable.categoryId, query.category));
+            countQ = countQ.where(eq(eventsTable.categoryId, query.category));
         }
         
-        const events = await q.orderBy(order(eventsTable[query.sortBy]));
+        const [events, totalResult] = await Promise.all([
+            q.orderBy(order(eventsTable[query.sortBy])).limit(query.limit).offset(offset),
+            countQ
+        ]);
         
-        return events;
+        return {
+            events,
+            total: totalResult[0].value,
+        };
     }
 
     async findAllCategories() {
