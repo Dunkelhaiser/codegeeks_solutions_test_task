@@ -1,6 +1,6 @@
 import type { Event } from "@/types/event";
 
-const API_URL = "http://server:4000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://server:4000";
 
 export interface Category {
     id: string;
@@ -8,7 +8,7 @@ export interface Category {
 }
 
 export const getEvents = async (sortBy: string = "date", order: string = "asc", category?: string): Promise<Event[]> => {
-    const url = new URL(`${API_URL}/events`);
+    const url = new URL(`${BACKEND_URL}/events`);
     url.searchParams.append("sortBy", sortBy);
     url.searchParams.append("order", order);
     if (category) {
@@ -27,7 +27,7 @@ export const getEvents = async (sortBy: string = "date", order: string = "asc", 
 };
 
 export const getCategories = async (): Promise<Category[]> => {
-    const res = await fetch(`${API_URL}/events/categories`, {
+    const res = await fetch(`${BACKEND_URL}/events/categories`, {
         next: { revalidate: 3600 },
     });
 
