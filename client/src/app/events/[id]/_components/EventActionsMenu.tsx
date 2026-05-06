@@ -50,11 +50,6 @@ export default function EventActionsMenu({ event, categories }: EventActionsMenu
                 aria-expanded={open ? "true" : undefined}
                 aria-haspopup="true"
                 onClick={handleMenuClick}
-                sx={{
-                    bgcolor: "rgba(255, 255, 255, 0.05)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
-                }}
             >
                 <MoreHorizIcon fontSize="small" />
             </IconButton>
@@ -68,17 +63,11 @@ export default function EventActionsMenu({ event, categories }: EventActionsMenu
                         sx: {
                             mt: 1,
                             minWidth: 150,
-                            borderRadius: 1,
-                            border: "1px solid rgba(255, 255, 255, 0.1)",
-                            background: "rgba(17, 24, 39, 0.95)",
-                            backdropFilter: "blur(20px)",
-                            backgroundImage: "none",
-                            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.4)",
                         },
                     },
                 }}
             >
-                <MenuItem onClick={handleEditOpen} sx={{ py: 1, px: 2 }}>
+                <MenuItem onClick={handleEditOpen}>
                     <ListItemIcon sx={{ minWidth: "32px !important" }}>
                         <EditIcon fontSize="small" color="primary" />
                     </ListItemIcon>
@@ -86,7 +75,7 @@ export default function EventActionsMenu({ event, categories }: EventActionsMenu
                         primary={<Typography sx={{ fontSize: "0.875rem", fontWeight: 500 }}>Edit</Typography>}
                     />
                 </MenuItem>
-                <MenuItem onClick={handleDeleteOpen} sx={{ py: 1, px: 2, color: "error.main" }}>
+                <MenuItem onClick={handleDeleteOpen} sx={{ color: "error.main" }}>
                     <ListItemIcon sx={{ minWidth: "32px !important" }}>
                         <DeleteIcon fontSize="small" color="error" />
                     </ListItemIcon>

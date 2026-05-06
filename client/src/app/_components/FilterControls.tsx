@@ -37,13 +37,6 @@ export default function FilterControls({ categories }: FilterControlsProps) {
                     value={category}
                     label="Category"
                     onChange={handleCategoryChange}
-                    sx={{
-                        borderRadius: "12px",
-                        bgcolor: "rgba(255, 255, 255, 0.05)",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "rgba(255, 255, 255, 0.1)",
-                        },
-                    }}
                 >
                     <MenuItem value="">All Categories</MenuItem>
                     {categories.map((cat) => (

@@ -11,14 +11,7 @@ export default async function CreateEventPage() {
     const categories = await getCategories();
 
     return (
-        <Box
-            sx={{
-                minHeight: "100vh",
-                background: "radial-gradient(circle at 50% 0%, rgba(124, 77, 255, 0.1) 0%, transparent 50%)",
-                pt: 4,
-                pb: 12,
-            }}
-        >
+        <Box sx={{ pt: 4, pb: 12 }}>
             <Container maxWidth="sm">
                 <Link href="/" style={{ textDecoration: "none" }}>
                     <Button
@@ -50,6 +43,7 @@ export default async function CreateEventPage() {
                             fontWeight: 800,
                             mb: 1,
                             background: "linear-gradient(135deg, #fff 0%, #9fa8da 100%)",
+                            backgroundClip: "text",
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
                         }}

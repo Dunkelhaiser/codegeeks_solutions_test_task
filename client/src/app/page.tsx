@@ -28,14 +28,7 @@ export default async function Home({ searchParams }: HomeProps) {
     const totalPages = Math.ceil(total / pageLimit);
 
     return (
-        <Box
-            sx={{
-                minHeight: "100vh",
-                background:
-                    "radial-gradient(circle at 50% 0%, rgba(124, 77, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(0, 229, 255, 0.05) 0%, transparent 40%)",
-                pb: 8,
-            }}
-        >
+        <Box sx={{ pb: 8 }}>
             <Box
                 sx={{
                     pt: 12,
@@ -52,6 +45,7 @@ export default async function Home({ searchParams }: HomeProps) {
                         gutterBottom
                         sx={{
                             background: "linear-gradient(135deg, #fff 0%, #9fa8da 100%)",
+                            backgroundClip: "text",
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
                             mb: 2,
@@ -59,10 +53,10 @@ export default async function Home({ searchParams }: HomeProps) {
                             fontWeight: 800,
                         }}
                     >
-                        Experience Extraordinary Events
+                        Events Management System
                     </Typography>
                     <Typography variant="h6" color="text.secondary" sx={{ mb: 4, fontWeight: 400, opacity: 0.8 }}>
-                        Discover the most exciting concerts, conferences, and festivals happening near you.
+                        Discover and manage events happening around you.
                     </Typography>
                 </Container>
             </Box>
@@ -108,11 +102,6 @@ export default async function Home({ searchParams }: HomeProps) {
                         position: "fixed",
                         bottom: 32,
                         right: 32,
-                        boxShadow: "0 8px 16px -4px rgba(124, 77, 255, 0.5)",
-                        "&:hover": {
-                            transform: "scale(1.1)",
-                        },
-                        transition: "all 0.2s ease-in-out",
                     }}
                 >
                     <AddIcon />

@@ -31,16 +31,9 @@ export default function EventCard({ event }: EventCardProps) {
                 display: "flex",
                 flexDirection: "column",
                 textDecoration: "none",
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 position: "relative",
                 overflow: "hidden",
-                border: "1px solid rgba(255, 255, 255, 0.05)",
-                background: "rgba(17, 24, 39, 0.7)",
-                backdropFilter: "blur(10px)",
                 "&:hover": {
-                    transform: "translateY(-8px)",
-                    borderColor: "primary.main",
-                    boxShadow: (theme) => `0 12px 24px -10px ${theme.palette.primary.main}40`,
                     "& .description": {
                         color: "text.primary",
                     },
@@ -49,18 +42,7 @@ export default function EventCard({ event }: EventCardProps) {
         >
             <CardContent sx={{ flexGrow: 1, p: 3 }}>
                 <Box sx={{ mb: 2, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                    <Chip
-                        label={event.category}
-                        size="small"
-                        color="primary"
-                        variant="outlined"
-                        sx={{
-                            borderRadius: "8px",
-                            backdropFilter: "blur(4px)",
-                            borderColor: "rgba(124, 77, 255, 0.3)",
-                            bgcolor: "rgba(124, 77, 255, 0.1)",
-                        }}
-                    />
+                    <Chip label={event.category} size="small" color="primary" variant="outlined" />
                 </Box>
 
                 <Typography variant="h6" component="h2" gutterBottom sx={{ lineHeight: 1.3, mb: 2 }}>

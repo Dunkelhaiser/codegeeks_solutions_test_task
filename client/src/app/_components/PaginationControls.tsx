@@ -14,7 +14,7 @@ export default function PaginationControls({ totalPages, currentPage }: Paginati
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set("page", value.toString());
         router.push(`/?${params.toString()}`);
@@ -30,17 +30,6 @@ export default function PaginationControls({ totalPages, currentPage }: Paginati
                 onChange={handleChange}
                 color="primary"
                 size="large"
-                sx={{
-                    "& .MuiPaginationItem-root": {
-                        borderRadius: "8px",
-                        color: "text.secondary",
-                        "&.Mui-selected": {
-                            color: "#fff",
-                            fontWeight: 700,
-                            boxShadow: "0 4px 12px rgba(124, 77, 255, 0.4)",
-                        },
-                    },
-                }}
             />
         </Box>
     );

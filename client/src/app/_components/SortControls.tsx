@@ -43,13 +43,6 @@ export default function SortControls() {
                     value={sortBy}
                     label="Sort By"
                     onChange={handleSortChange}
-                    sx={{
-                        borderRadius: "12px",
-                        bgcolor: "rgba(255, 255, 255, 0.05)",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "rgba(255, 255, 255, 0.1)",
-                        },
-                    }}
                 >
                     <MenuItem value="date">Date</MenuItem>
                     <MenuItem value="title">Title</MenuItem>
@@ -62,21 +55,6 @@ export default function SortControls() {
                 onChange={handleOrderChange}
                 aria-label="sort order"
                 size="small"
-                sx={{
-                    bgcolor: "rgba(255, 255, 255, 0.05)",
-                    borderRadius: "12px",
-                    "& .MuiToggleButton-root": {
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                        px: 2,
-                        "&.Mui-selected": {
-                            bgcolor: "primary.main",
-                            color: "primary.contrastText",
-                            "&:hover": {
-                                bgcolor: "primary.dark",
-                            },
-                        },
-                    },
-                }}
             >
                 <ToggleButton value="asc" aria-label="ascending">
                     <ArrowUpwardIcon fontSize="small" sx={{ mr: 0.5 }} />

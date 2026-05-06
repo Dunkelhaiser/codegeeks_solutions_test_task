@@ -37,14 +37,7 @@ export default async function EventPage({ params }: EventPageProps) {
     });
 
     return (
-        <Box
-            sx={{
-                minHeight: "100vh",
-                background: "radial-gradient(circle at 50% 0%, rgba(124, 77, 255, 0.1) 0%, transparent 50%)",
-                pt: 4,
-                pb: 12,
-            }}
-        >
+        <Box sx={{ pt: 4, pb: 12 }}>
             <Container maxWidth="lg">
                 <Link href="/" style={{ textDecoration: "none" }}>
                     <Button
@@ -71,17 +64,7 @@ export default async function EventPage({ params }: EventPageProps) {
                             }}
                         >
                             <Box>
-                                <Chip
-                                    label={event.category}
-                                    color="primary"
-                                    variant="outlined"
-                                    sx={{
-                                        mb: 3,
-                                        borderRadius: "8px",
-                                        fontWeight: 600,
-                                        bgcolor: "rgba(124, 77, 255, 0.1)",
-                                    }}
-                                />
+                                <Chip label={event.category} color="primary" variant="outlined" sx={{ mb: 3 }} />
                                 <Typography
                                     variant="h2"
                                     component="h1"
@@ -195,7 +178,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
                 {event.similarEvents && event.similarEvents.length > 0 && (
                     <Box sx={{ mt: 10 }}>
-                        <Divider sx={{ mb: 6, borderColor: "rgba(255, 255, 255, 0.1)" }} />
+                        <Divider sx={{ mb: 6 }} />
                         <Typography variant="h4" sx={{ fontWeight: 800, mb: 4 }}>
                             Similar Events
                         </Typography>

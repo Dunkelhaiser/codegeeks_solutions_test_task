@@ -54,7 +54,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
             {serverError && (
-                <Alert severity="error" sx={{ mb: 3, borderRadius: "12px" }}>
+                <Alert severity="error" sx={{ mb: 3 }}>
                     {serverError}
                 </Alert>
             )}
@@ -69,12 +69,6 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 {...register("title")}
                 error={Boolean(errors.title)}
                 helperText={errors.title?.message}
-                sx={{
-                    "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        bgcolor: "rgba(255, 255, 255, 0.03)",
-                    },
-                }}
             />
 
             <TextField
@@ -92,12 +86,6 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 {...register("date")}
                 error={Boolean(errors.date)}
                 helperText={errors.date?.message}
-                sx={{
-                    "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        bgcolor: "rgba(255, 255, 255, 0.03)",
-                    },
-                }}
             />
 
             <TextField
@@ -109,12 +97,6 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 {...register("location")}
                 error={Boolean(errors.location)}
                 helperText={errors.location?.message}
-                sx={{
-                    "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        bgcolor: "rgba(255, 255, 255, 0.03)",
-                    },
-                }}
             />
 
             <TextField
@@ -128,12 +110,6 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 {...register("categoryId")}
                 error={Boolean(errors.categoryId)}
                 helperText={errors.categoryId?.message}
-                sx={{
-                    "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        bgcolor: "rgba(255, 255, 255, 0.03)",
-                    },
-                }}
             >
                 <MenuItem value="" disabled>
                     Select a category
@@ -155,12 +131,6 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 {...register("description")}
                 error={Boolean(errors.description)}
                 helperText={errors.description?.message}
-                sx={{
-                    "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        bgcolor: "rgba(255, 255, 255, 0.03)",
-                    },
-                }}
             />
 
             <Button
@@ -172,14 +142,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                     mt: 4,
                     mb: 2,
                     py: 1.5,
-                    borderRadius: "12px",
                     fontSize: "1.1rem",
-                    fontWeight: 600,
-                    textTransform: "none",
-                    boxShadow: "0 8px 16px -4px rgba(124, 77, 255, 0.4)",
-                    "&:hover": {
-                        boxShadow: "0 12px 20px -4px rgba(124, 77, 255, 0.6)",
-                    },
                 }}
             >
                 {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Create Event"}
