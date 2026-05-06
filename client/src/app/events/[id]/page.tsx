@@ -10,7 +10,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { getCategories, getEvent } from "@/api/events";
-import EditEventModal from "@/components/EditEventModal";
+import EventActionsMenu from "@/components/EventActionsMenu";
 
 interface EventPageProps {
     params: Promise<{ id: string }>;
@@ -88,7 +88,7 @@ export default async function EventPage({ params }: EventPageProps) {
                                     {event.title}
                                 </Typography>
                             </Box>
-                            <EditEventModal event={event} categories={categories} />
+                            <EventActionsMenu event={event} categories={categories} />
                         </Box>
 
                         <Box

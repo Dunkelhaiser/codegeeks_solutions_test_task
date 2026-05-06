@@ -1,6 +1,6 @@
 "use server";
 
-import { createEvent, updateEvent } from "@/api/events";
+import { createEvent, deleteEvent, updateEvent } from "@/api/events";
 import { revalidatePath } from "next/cache";
 
 export async function createEventAction(data: any) {
@@ -26,6 +26,19 @@ export async function updateEventAction(id: string, data: any) {
         return {
             success: false,
             error: error instanceof Error ? error.message : "Failed to update event",
+        };
+    }
+}
+
+export async function deleteEventAction(id: string) {
+    try {
+        await deleteEvent(id);
+        revalidatePath("/");
+        return { success: true };
+    } catch (error) {
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : "Failed to delete event",
         };
     }
 }
