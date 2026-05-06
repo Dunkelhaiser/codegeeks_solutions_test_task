@@ -1,4 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateEventDto } from './createEvent.dto';
+import { createZodDto } from 'nestjs-zod';
+import { eventSchema } from './createEvent.dto';
 
-export class UpdateEventDto extends PartialType(CreateEventDto) {}
+export class UpdateEventDto extends createZodDto(eventSchema.partial()) {}

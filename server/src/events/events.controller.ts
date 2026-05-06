@@ -19,14 +19,8 @@ export class EventsController {
     }
 
     @Get(':id')
-    async findOne(@Param() { id }: GetEventDto) {
-        const event = await this.eventsService.findOne(id);
-
-        if (!event) {
-            throw new NotFoundException(`Event with id ${id} not found`);
-        }
-
-        return event;
+    findOne(@Param() { id }: GetEventDto) {
+        return this.eventsService.findOne(id);
     }
 
     @Put(":id")

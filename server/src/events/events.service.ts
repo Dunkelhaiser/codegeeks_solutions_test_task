@@ -1,4 +1,4 @@
-import { Injectable,  } from "@nestjs/common";
+import { Injectable, NotFoundException,  } from "@nestjs/common";
 import { db } from "../db";
 import { eventsTable } from "../db/schema";
 import { CreateEventDto } from "./dto/createEvent.dto";
@@ -19,11 +19,19 @@ export class EventsService {
     async findOne(id: string) {
         const event = await db.select().from(eventsTable).where(eq(eventsTable.id, id));
 
-        return event.length > 0 ? event[0] : null;
+        if(event.length === 0) {
+            throw new NotFoundException(`Event with id ${id} not found`);
+        }
+
+        return event[0];
     }
 
-    update(id: string, updateEventDto: UpdateEventDto) {
-        return `This action updates a #${id} event`;
+    async update(id: string, updateEventDto: UpdateEventDto) {
+        await this.findOne(id);
+        
+        const [updatedEvent] = await db.update(eventsTable).set(updateEventDto).where(eq(eventsTable.id, id)).returning();
+        
+        return updatedEvent;
     }
 
     remove(id: string) {
