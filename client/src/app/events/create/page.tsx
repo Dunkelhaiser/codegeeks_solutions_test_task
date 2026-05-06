@@ -37,7 +37,7 @@ export default async function CreateEventPage() {
                 <Box
                     sx={{
                         p: { xs: 3, md: 5 },
-                        borderRadius: 6,
+                        borderRadius: 3,
                         border: "1px solid rgba(255, 255, 255, 0.1)",
                         background: "rgba(17, 24, 39, 0.7)",
                         backdropFilter: "blur(20px)",
