@@ -2,17 +2,18 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { getEvents } from "@/api/events";
+import { getCategories, getEvents } from "@/api/events";
 import EventCard from "@/components/EventCard";
 import SortControls from "@/components/SortControls";
+import FilterControls from "@/components/FilterControls";
 
 interface HomeProps {
-    searchParams: Promise<{ sortBy?: string; order?: string }>;
+    searchParams: Promise<{ sortBy?: string; order?: string; category?: string }>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-    const { sortBy = "date", order = "asc" } = await searchParams;
-    const events = await getEvents(sortBy, order);
+    const { sortBy = "date", order = "asc", category } = await searchParams;
+    const [events, categories] = await Promise.all([getEvents(sortBy, order, category), getCategories()]);
 
     return (
         <Box
@@ -52,7 +53,10 @@ export default async function Home({ searchParams }: HomeProps) {
             </Box>
 
             <Container maxWidth="lg">
-                <SortControls />
+                <Box sx={{ mb: 6, display: "flex", gap: 3, flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
+                    <FilterControls categories={categories} />
+                    <SortControls />
+                </Box>
                 <Grid container spacing={4}>
                     {events.map((event) => (
                         <Grid key={event.id} size={{ xs: 12, sm: 6, md: 4 }}>

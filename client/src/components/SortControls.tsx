@@ -26,10 +26,7 @@ export default function SortControls() {
         router.push(`?${params.toString()}`, { scroll: false });
     };
 
-    const handleOrderChange = (
-        _event: React.MouseEvent<HTMLElement>,
-        newOrder: string | null
-    ) => {
+    const handleOrderChange = (_event: React.MouseEvent<HTMLElement>, newOrder: string | null) => {
         if (newOrder !== null) {
             const params = new URLSearchParams(searchParams.toString());
             params.set("order", newOrder);
@@ -38,7 +35,7 @@ export default function SortControls() {
     };
 
     return (
-        <Box sx={{ display: "flex", gap: 2, alignItems: "center", mb: 4, justifyContent: "center" }}>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             <FormControl size="small" sx={{ minWidth: 150 }}>
                 <InputLabel id="sort-by-label">Sort By</InputLabel>
                 <Select
