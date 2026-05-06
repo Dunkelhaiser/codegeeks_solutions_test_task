@@ -12,8 +12,10 @@ export class EventsService {
         return event;
     }
 
-    findAll() {
-        return "This action returns all events";
+    async findAll() {
+        const events = await db.select().from(eventsTable);
+        
+        return events;
     }
 
     async findOne(id: string) {
