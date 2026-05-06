@@ -15,7 +15,14 @@ export class EventsService {
 
     async findAll(query: GetEventsQueryDto) {
         const order = query.order === 'desc' ? desc : asc;
-        const events = await db.select().from(eventsTable).orderBy(order(eventsTable[query.sortBy]));
+        
+        let q = db.select().from(eventsTable).$dynamic();
+        
+        if (query.category) {
+            q = q.where(eq(eventsTable.categoryId, query.category));
+        }
+        
+        const events = await q.orderBy(order(eventsTable[query.sortBy]));
         
         return events;
     }
