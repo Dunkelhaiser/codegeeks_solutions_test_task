@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CreateEventForm from "./_components/CreateEventForm";
 import { getCategories } from "@/api/events";
-import CreateEventForm from "@/components/CreateEventForm";
 
 export default async function CreateEventPage() {
     const categories = await getCategories();

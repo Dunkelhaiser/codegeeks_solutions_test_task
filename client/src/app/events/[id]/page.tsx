@@ -10,7 +10,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { getCategories, getEvent } from "@/api/events";
-import EventActionsMenu from "@/components/EventActionsMenu";
+import EventActionsMenu from "./_components/EventActionsMenu";
 import EventCard from "@/components/EventCard";
 import Divider from "@mui/material/Divider";
 
