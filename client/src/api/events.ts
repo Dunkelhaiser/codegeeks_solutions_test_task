@@ -37,3 +37,18 @@ export const getCategories = async (): Promise<Category[]> => {
 
     return res.json();
 };
+
+export const getEvent = async (id: string): Promise<Event> => {
+    const res = await fetch(`${BACKEND_URL}/events/${id}`, {
+        next: { revalidate: 60 },
+    });
+
+    if (!res.ok) {
+        if (res.status === 404) {
+            throw new Error("Event not found");
+        }
+        throw new Error("Failed to fetch event");
+    }
+
+    return res.json();
+};

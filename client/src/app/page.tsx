@@ -42,6 +42,8 @@ export default async function Home({ searchParams }: HomeProps) {
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
                             mb: 2,
+                            fontSize: { xs: "2.75rem", md: "3rem" },
+                            fontWeight: 800,
                         }}
                     >
                         Experience Extraordinary Events

@@ -1,0 +1,144 @@
+import { notFound } from "next/navigation";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Grid from "@mui/material/Grid";
+import Link from "next/link";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { getEvent } from "@/api/events";
+
+interface EventPageProps {
+    params: Promise<{ id: string }>;
+}
+
+export default async function EventPage({ params }: EventPageProps) {
+    const { id } = await params;
+    let event;
+
+    try {
+        event = await getEvent(id);
+    } catch (error) {
+        if (error instanceof Error && error.message === "Event not found") {
+            return notFound();
+        }
+        throw error;
+    }
+
+    const formattedDate = new Date(event.date).toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+    return (
+        <Box
+            sx={{
+                minHeight: "100vh",
+                background: "radial-gradient(circle at 50% 0%, rgba(124, 77, 255, 0.1) 0%, transparent 50%)",
+                pt: 4,
+                pb: 12,
+            }}
+        >
+            <Container maxWidth="lg">
+                <Link href="/" style={{ textDecoration: "none" }}>
+                    <Button
+                        startIcon={<ArrowBackIcon />}
+                        sx={{
+                            mb: 6,
+                            color: "text.secondary",
+                            "&:hover": { color: "primary.main", bgcolor: "transparent" },
+                        }}
+                    >
+                        Back to all events
+                    </Button>
+                </Link>
+
+                <Grid container spacing={8}>
+                    <Grid size={{ xs: 12, md: 8 }}>
+                        <Box sx={{ mb: 4 }}>
+                            <Chip
+                                label={event.category}
+                                color="primary"
+                                variant="outlined"
+                                sx={{
+                                    mb: 3,
+                                    borderRadius: "8px",
+                                    fontWeight: 600,
+                                    bgcolor: "rgba(124, 77, 255, 0.1)",
+                                }}
+                            />
+                            <Typography
+                                variant="h2"
+                                component="h1"
+                                gutterBottom
+                                sx={{
+                                    fontWeight: { xs: 700, md: 800 },
+                                    lineHeight: 1.2,
+                                    fontSize: { xs: "3rem", md: "3.75rem" },
+                                }}
+                            >
+                                {event.title}
+                            </Typography>
+                        </Box>
+
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 4,
+                                mb: 6,
+                                p: 3,
+                                borderRadius: 4,
+                                border: "1px solid rgba(255, 255, 255, 0.1)",
+                                bgcolor: "rgba(255, 255, 255, 0.03)",
+                            }}
+                        >
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                                <CalendarMonthIcon color="primary" />
+                                <Box>
+                                    <Typography variant="caption" sx={{ display: "block", color: "text.secondary", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.1em" }}>
+                                        Date and Time
+                                    </Typography>
+                                    <Typography variant="body1">{formattedDate}</Typography>
+                                </Box>
+                            </Box>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                                <LocationOnIcon color="primary" />
+                                <Box>
+                                    <Typography variant="caption" sx={{ display: "block", color: "text.secondary", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.1em" }}>
+                                        Location
+                                    </Typography>
+                                    <Typography variant="body1">{event.location}</Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        <Box sx={{ mb: 8 }}>
+                            <Typography variant="h5" gutterBottom sx={{ fontWeight: 700, mb: 3 }}>
+                                About this event
+                            </Typography>
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                    lineHeight: 1.8,
+                                    color: "text.secondary",
+                                    fontSize: "1.1rem",
+                                    whiteSpace: "pre-wrap",
+                                }}
+                            >
+                                {event.description || "No description provided for this event."}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Container>
+        </Box>
+    );
+}
