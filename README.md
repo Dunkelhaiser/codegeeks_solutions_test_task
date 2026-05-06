@@ -1,5 +1,18 @@
 # Event Management System
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/localhost_3000_.png" width="800" alt="Main Events List" />
+</p>
+
+<p align="center">
+  <img src="screenshots/localhost_3000_ (1).png" width="45%" alt="Event Details" />
+  <img src="screenshots/localhost_3000_ (2).png" width="45%" alt="Create Event" />
+</p>
+
+---
+
 ## Tech Stack
 
 - **Containerization**: [Docker](https://www.docker.com/) & Docker Compose
