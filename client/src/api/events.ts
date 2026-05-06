@@ -69,3 +69,20 @@ export const createEvent = async (data: any): Promise<Event> => {
 
     return res.json();
 };
+
+export const updateEvent = async (id: string, data: any): Promise<Event> => {
+    const res = await fetch(`${BACKEND_URL}/events/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Failed to update event");
+    }
+
+    return res.json();
+};

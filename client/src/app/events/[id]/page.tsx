@@ -9,7 +9,8 @@ import Link from "next/link";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { getEvent } from "@/api/events";
+import { getCategories, getEvent } from "@/api/events";
+import EditEventModal from "@/components/EditEventModal";
 
 interface EventPageProps {
     params: Promise<{ id: string }>;
@@ -17,15 +18,14 @@ interface EventPageProps {
 
 export default async function EventPage({ params }: EventPageProps) {
     const { id } = await params;
-    let event;
+    
+    const [event, categories] = await Promise.all([
+        getEvent(id).catch(() => null),
+        getCategories()
+    ]);
 
-    try {
-        event = await getEvent(id);
-    } catch (error) {
-        if (error instanceof Error && error.message === "Event not found") {
-            return notFound();
-        }
-        throw error;
+    if (!event) {
+        return notFound();
     }
 
     const formattedDate = new Date(event.date).toLocaleDateString("en-US", {
@@ -62,30 +62,33 @@ export default async function EventPage({ params }: EventPageProps) {
 
                 <Grid container spacing={8}>
                     <Grid size={{ xs: 12, md: 8 }}>
-                        <Box sx={{ mb: 4 }}>
-                            <Chip
-                                label={event.category}
-                                color="primary"
-                                variant="outlined"
-                                sx={{
-                                    mb: 3,
-                                    borderRadius: "8px",
-                                    fontWeight: 600,
-                                    bgcolor: "rgba(124, 77, 255, 0.1)",
-                                }}
-                            />
-                            <Typography
-                                variant="h2"
-                                component="h1"
-                                gutterBottom
-                                sx={{
-                                    fontWeight: { xs: 700, md: 800 },
-                                    lineHeight: 1.2,
-                                    fontSize: { xs: "3rem", md: "3.75rem" },
-                                }}
-                            >
-                                {event.title}
-                            </Typography>
+                        <Box sx={{ mb: 4, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 2 }}>
+                            <Box>
+                                <Chip
+                                    label={event.category}
+                                    color="primary"
+                                    variant="outlined"
+                                    sx={{
+                                        mb: 3,
+                                        borderRadius: "8px",
+                                        fontWeight: 600,
+                                        bgcolor: "rgba(124, 77, 255, 0.1)",
+                                    }}
+                                />
+                                <Typography
+                                    variant="h2"
+                                    component="h1"
+                                    gutterBottom
+                                    sx={{
+                                        fontWeight: { xs: 700, md: 800 },
+                                        lineHeight: 1.2,
+                                        fontSize: { xs: "2.5rem", md: "3.75rem" },
+                                    }}
+                                >
+                                    {event.title}
+                                </Typography>
+                            </Box>
+                            <EditEventModal event={event} categories={categories} />
                         </Box>
 
                         <Box

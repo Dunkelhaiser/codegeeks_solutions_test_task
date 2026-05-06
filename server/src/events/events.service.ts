@@ -50,6 +50,7 @@ export class EventsService {
             date: eventsTable.date,
             location: eventsTable.location,
             description: eventsTable.description,
+            categoryId: eventsTable.categoryId,
             category: categoriesTable.name,
         }).from(eventsTable).innerJoin(categoriesTable, eq(eventsTable.categoryId, categoriesTable.id)).where(eq(eventsTable.id, id));
 

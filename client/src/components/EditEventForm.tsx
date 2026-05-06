@@ -1,7 +1,7 @@
 "use client";
 
-import  { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Box from "@mui/material/Box";
@@ -12,50 +12,61 @@ import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useRouter } from "next/navigation";
 import { Category } from "@/api/events";
-import { createEventAction } from "@/api/actions";
+import { Event } from "@/types/event";
+import { updateEventAction } from "@/api/actions";
 
-const createEventSchema = z.object({
+const eventSchema = z.object({
     title: z.string().min(1, "Title is required").max(255, "Title must be at most 255 characters long"),
-    date: z
-        .string()
-        .min(1, "Date is required")
-        .refine((value) => new Date(value) > new Date(), "Date must be in the future"),
+    date: z.string().min(1, "Date is required"),
     location: z.string().min(1, "Location is required").max(255, "Location must be at most 255 characters long"),
     description: z.string().max(2500, "Description must be at most 2500 characters long").optional().or(z.literal("")),
     categoryId: z.uuid("Please select a category"),
 });
 
-type CreateEventFormValues = z.infer<typeof createEventSchema>;
+type EventFormValues = z.infer<typeof eventSchema>;
 
-interface CreateEventFormProps {
+interface EditEventFormProps {
+    event: Event;
     categories: Category[];
+    onSuccess?: () => void;
 }
 
-export default function CreateEventForm({ categories }: CreateEventFormProps) {
+export default function EditEventForm({ event, categories, onSuccess }: EditEventFormProps) {
     const router = useRouter();
     const [serverError, setServerError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const formattedDate = new Date(event.date).toISOString().slice(0, 16);
+
     const {
         register,
+        control,
         handleSubmit,
-        formState: { errors },
-    } = useForm<CreateEventFormValues>({
-        resolver: zodResolver(createEventSchema),
+        formState: { errors, isDirty },
+    } = useForm<EventFormValues>({
+        resolver: zodResolver(eventSchema),
         defaultValues: {
-            description: "",
+            title: event.title,
+            date: formattedDate,
+            location: event.location,
+            description: event.description || "",
+            categoryId: event.categoryId,
         },
     });
 
-    const onSubmit = async (data: CreateEventFormValues) => {
+    const onSubmit = async (data: EventFormValues) => {
         setIsSubmitting(true);
         setServerError(null);
         try {
-            const result = await createEventAction(data);
+            const result = await updateEventAction(event.id, data);
             if (result.success && result.data) {
-                router.push(`/events/${result.data.id}`);
+                if (onSuccess) {
+                    onSuccess();
+                } else {
+                    router.push(`/events/${event.id}`);
+                }
             } else {
-                setServerError(result.error || "Failed to create event");
+                setServerError(result.error || "Failed to update event");
             }
         } catch (error) {
             setServerError("An unexpected error occurred");
@@ -78,7 +89,6 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 fullWidth
                 id="title"
                 label="Event Title"
-                autoFocus
                 {...register("title")}
                 error={!!errors.title}
                 helperText={errors.title?.message}
@@ -130,33 +140,38 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 }}
             />
 
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                select
-                id="categoryId"
-                label="Category"
-                defaultValue=""
-                {...register("categoryId")}
-                error={!!errors.categoryId}
-                helperText={errors.categoryId?.message}
-                sx={{
-                    "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        bgcolor: "rgba(255, 255, 255, 0.03)",
-                    },
-                }}
-            >
-                <MenuItem value="" disabled>
-                    Select a category
-                </MenuItem>
-                {categories.map((category) => (
-                    <MenuItem key={category.id} value={category.id}>
-                        {category.name}
-                    </MenuItem>
-                ))}
-            </TextField>
+            <Controller
+                name="categoryId"
+                control={control}
+                render={({ field }) => (
+                    <TextField
+                        {...field}
+                        margin="normal"
+                        required
+                        fullWidth
+                        select
+                        id="categoryId"
+                        label="Category"
+                        error={!!errors.categoryId}
+                        helperText={errors.categoryId?.message}
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "12px",
+                                bgcolor: "rgba(255, 255, 255, 0.03)",
+                            },
+                        }}
+                    >
+                        <MenuItem value="" disabled>
+                            Select a category
+                        </MenuItem>
+                        {categories.map((category) => (
+                            <MenuItem key={category.id} value={category.id}>
+                                {category.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                )}
+            />
 
             <TextField
                 margin="normal"
@@ -180,7 +195,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 type="submit"
                 fullWidth
                 variant="contained"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !isDirty}
                 sx={{
                     mt: 4,
                     mb: 2,
@@ -189,13 +204,14 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                     fontSize: "1.1rem",
                     fontWeight: 600,
                     textTransform: "none",
-                    boxShadow: "0 8px 16px -4px rgba(124, 77, 255, 0.4)",
+                    boxShadow: !isDirty ? "none" : "0 8px 16px -4px rgba(124, 77, 255, 0.4)",
                     "&:hover": {
-                        boxShadow: "0 12px 20px -4px rgba(124, 77, 255, 0.6)",
+                        boxShadow: !isDirty ? "none" : "0 12px 20px -4px rgba(124, 77, 255, 0.6)",
                     },
+                    opacity: !isDirty ? 0.6 : 1,
                 }}
             >
-                {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Create Event"}
+                {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Save Changes"}
             </Button>
         </Box>
     );
