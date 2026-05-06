@@ -6,6 +6,9 @@ import { getCategories, getEvents } from "@/api/events";
 import EventCard from "@/components/EventCard";
 import SortControls from "@/components/SortControls";
 import FilterControls from "@/components/FilterControls";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import Link from "next/link";
 
 interface HomeProps {
     searchParams: Promise<{ sortBy?: string; order?: string; category?: string }>;
@@ -75,6 +78,25 @@ export default async function Home({ searchParams }: HomeProps) {
                     </Box>
                 )}
             </Container>
+
+            <Link href="/events/create">
+                <Fab
+                    color="primary"
+                    aria-label="add event"
+                    sx={{
+                        position: "fixed",
+                        bottom: 32,
+                        right: 32,
+                        boxShadow: "0 8px 16px -4px rgba(124, 77, 255, 0.5)",
+                        "&:hover": {
+                            transform: "scale(1.1)",
+                        },
+                        transition: "all 0.2s ease-in-out",
+                    }}
+                >
+                    <AddIcon />
+                </Fab>
+            </Link>
         </Box>
     );
 }

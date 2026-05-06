@@ -52,3 +52,20 @@ export const getEvent = async (id: string): Promise<Event> => {
 
     return res.json();
 };
+
+export const createEvent = async (data: any): Promise<Event> => {
+    const res = await fetch(`${BACKEND_URL}/events`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Failed to create event");
+    }
+
+    return res.json();
+};
