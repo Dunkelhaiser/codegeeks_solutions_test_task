@@ -12,7 +12,7 @@ import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useRouter } from "next/navigation";
 import { Category } from "@/api/events";
-import { Event } from "@/types/event";
+import { Event } from "@/api/types";
 import { updateEventAction } from "@/api/actions";
 
 const eventSchema = z.object({

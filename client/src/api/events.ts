@@ -1,4 +1,4 @@
-import type { Event } from "@/types/event";
+import type { Event } from "@/api/types";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://server:4000";
 

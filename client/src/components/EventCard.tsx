@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import type { Event } from "@/types/event";
+import type { Event } from "@/api/types";
 
 interface EventCardProps {
     event: Event;

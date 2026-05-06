@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Category } from "@/api/events";
-import { Event } from "@/types/event";
+import { Event } from "@/api/types";
 import EditEventForm from "./EditEventForm";
 
 interface EditEventDialogProps {
