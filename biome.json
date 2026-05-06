@@ -87,6 +87,7 @@
             "linter": {
                 "rules": {
                     "style": {
+                        "useComponentExportOnlyModules": "off",
                         "noDefaultExport": "off",
                         "useFilenamingConvention": "off",
                         "noImplicitBoolean": "off",
