@@ -6,4 +6,5 @@ export interface Event {
     description: string | null;
     categoryId: string;
     category: string;
+    similarEvents?: Omit<Event, "similarEvents">[];
 }

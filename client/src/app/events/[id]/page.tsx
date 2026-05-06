@@ -11,6 +11,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { getCategories, getEvent } from "@/api/events";
 import EventActionsMenu from "@/components/EventActionsMenu";
+import EventCard from "@/components/EventCard";
+import Divider from "@mui/material/Divider";
 
 interface EventPageProps {
     params: Promise<{ id: string }>;
@@ -163,6 +165,22 @@ export default async function EventPage({ params }: EventPageProps) {
                         </Box>
                     </Grid>
                 </Grid>
+
+                {event.similarEvents && event.similarEvents.length > 0 && (
+                    <Box sx={{ mt: 10 }}>
+                        <Divider sx={{ mb: 6, borderColor: "rgba(255, 255, 255, 0.1)" }} />
+                        <Typography variant="h4" sx={{ fontWeight: 800, mb: 4 }}>
+                            Similar Events
+                        </Typography>
+                        <Grid container spacing={4}>
+                            {event.similarEvents.map((similarEvent) => (
+                                <Grid key={similarEvent.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                                    <EventCard event={similarEvent} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                )}
             </Container>
         </Box>
     );
