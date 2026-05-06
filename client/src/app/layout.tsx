@@ -1,6 +1,6 @@
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import type { Metadata } from "next";
-import "./globals.css";
+import ThemeRegistry from "@/components/ThemeRegistry";
 
 export const metadata: Metadata = {
     title: "Event Management System",
@@ -15,7 +15,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+                <AppRouterCacheProvider>
+                    <ThemeRegistry>{children}</ThemeRegistry>
+                </AppRouterCacheProvider>
             </body>
         </html>
     );
