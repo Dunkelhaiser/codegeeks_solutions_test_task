@@ -1,0 +1,37 @@
+services:
+    db:
+        container_name: db
+        image: postgres:18.1-alpine3.23
+        restart: always
+        env_file: "./server/.env"
+        volumes:
+            - /data/postgres:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+    server:
+        container_name: server
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        image: server
+        volumes:
+            - ./server:/app
+            - /app/node_modules
+        ports:
+            - 4000:4000
+        env_file: "./server/.env"
+        depends_on:
+            - db
+
+    client:
+        container_name: client
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        image: client
+        volumes:
+            - ./client:/app
+            - /app/node_modules
+        ports:
+            - 3000:3000
+        env_file: "./client/.env"
