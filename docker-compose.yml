@@ -16,7 +16,6 @@ services:
         image: server
         volumes:
             - ./server:/app
-            - /app/node_modules
         ports:
             - 4000:4000
         env_file: "./server/.env"
@@ -31,7 +30,6 @@ services:
         image: client
         volumes:
             - ./client:/app
-            - /app/node_modules
         ports:
             - 3000:3000
         env_file: "./client/.env"
