@@ -1,13 +1,18 @@
-import React from "react";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { getEvents } from "@/api/events";
 import EventCard from "@/components/EventCard";
+import SortControls from "@/components/SortControls";
 
-export default async function Home() {
-    const events = await getEvents();
+interface HomeProps {
+    searchParams: Promise<{ sortBy?: string; order?: string }>;
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+    const { sortBy = "date", order = "asc" } = await searchParams;
+    const events = await getEvents(sortBy, order);
 
     return (
         <Box
@@ -47,6 +52,7 @@ export default async function Home() {
             </Box>
 
             <Container maxWidth="lg">
+                <SortControls />
                 <Grid container spacing={4}>
                     {events.map((event) => (
                         <Grid key={event.id} size={{ xs: 12, sm: 6, md: 4 }}>

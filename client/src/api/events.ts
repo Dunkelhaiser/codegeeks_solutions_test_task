@@ -2,8 +2,12 @@ import type { Event } from "@/types/event";
 
 const API_URL = "http://server:4000";
 
-export const getEvents = async (): Promise<Event[]> => {
-    const res = await fetch(`${API_URL}/events`, {
+export const getEvents = async (sortBy: string = "date", order: string = "asc"): Promise<Event[]> => {
+    const url = new URL(`${API_URL}/events`);
+    url.searchParams.append("sortBy", sortBy);
+    url.searchParams.append("order", order);
+
+    const res = await fetch(url.toString(), {
         next: { revalidate: 60 },
     });
 
@@ -12,4 +16,4 @@ export const getEvents = async (): Promise<Event[]> => {
     }
 
     return res.json();
-}
+};
