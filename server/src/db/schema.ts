@@ -1,4 +1,4 @@
-import { date, index, pgTable, text, uuid, varchar } from "drizzle-orm/pg-core";
+import { timestamp, index, pgTable, text, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const categoriesTable = pgTable("categories", {
     id: uuid().primaryKey().defaultRandom(),
@@ -10,7 +10,7 @@ export const eventsTable = pgTable(
     {
         id: uuid().primaryKey().defaultRandom(),
         title: varchar({ length: 255 }).notNull(),
-        date: date().notNull(),
+        date: timestamp().notNull(),
         location: varchar({ length: 255 }).notNull(),
         description: text(),
         categoryId: uuid()
