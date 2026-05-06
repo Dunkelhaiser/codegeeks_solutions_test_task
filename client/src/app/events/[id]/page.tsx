@@ -60,7 +60,7 @@ export default async function EventPage({ params }: EventPageProps) {
                     </Button>
                 </Link>
 
-                <Grid container spacing={8}>
+                <Grid container spacing={4}>
                     <Grid size={{ xs: 12, md: 8 }}>
                         <Box sx={{ mb: 4, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 2 }}>
                             <Box>
@@ -138,6 +138,28 @@ export default async function EventPage({ params }: EventPageProps) {
                             >
                                 {event.description || "No description provided for this event."}
                             </Typography>
+                        </Box>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 4 }}>
+                        <Box
+                            sx={{
+                                width: "100%",
+                                height: 500,
+                                borderRadius: 0.5,
+                                overflow: "hidden",
+                                border: "1px solid rgba(255, 255, 255, 0.1)",
+                                mb: 3,
+                            }}
+                        >
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)" }}
+                                loading="lazy"
+                                allowFullScreen
+                                src={`https://maps.google.com/maps?q=${encodeURIComponent(event.location)}&t=&z=14&ie=UTF8&iwloc=B&output=embed`}
+                            />
                         </Box>
                     </Grid>
                 </Grid>
