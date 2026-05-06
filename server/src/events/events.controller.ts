@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from "@nestjs/common";
 import { CreateEventDto } from "./dto/createEvent.dto";
 import { UpdateEventDto } from "./dto/updateEvent.dto";
+import { GetEventDto } from "./dto/getEvent.dto";
 import { EventsService } from "./events.service";
 
 @Controller("events")
@@ -18,17 +19,23 @@ export class EventsController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.eventsService.findOne(Number(id));
+    async findOne(@Param() { id }: GetEventDto) {
+        const event = await this.eventsService.findOne(id);
+
+        if (!event) {
+            throw new NotFoundException(`Event with id ${id} not found`);
+        }
+
+        return event;
     }
 
     @Put(":id")
-    update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-        return this.eventsService.update(Number(id), updateEventDto);
+    update(@Param() { id }: GetEventDto, @Body() updateEventDto: UpdateEventDto) {
+        return this.eventsService.update(id, updateEventDto);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.eventsService.remove(Number(id));
+    remove(@Param() { id }: GetEventDto) {
+        return this.eventsService.remove(id);
     }
 }

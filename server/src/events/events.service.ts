@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable,  } from "@nestjs/common";
 import { db } from "../db";
 import { eventsTable } from "../db/schema";
 import { CreateEventDto } from "./dto/createEvent.dto";
 import { UpdateEventDto } from "./dto/updateEvent.dto";
+import { eq } from "drizzle-orm";
 
 @Injectable()
 export class EventsService {
@@ -15,15 +16,17 @@ export class EventsService {
         return "This action returns all events";
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} event`;
+    async findOne(id: string) {
+        const event = await db.select().from(eventsTable).where(eq(eventsTable.id, id));
+
+        return event.length > 0 ? event[0] : null;
     }
 
-    update(id: number, updateEventDto: UpdateEventDto) {
+    update(id: string, updateEventDto: UpdateEventDto) {
         return `This action updates a #${id} event`;
     }
 
-    remove(id: number) {
+    remove(id: string) {
         return `This action removes a #${id} event`;
     }
 }
