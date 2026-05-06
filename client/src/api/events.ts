@@ -1,3 +1,4 @@
+import { CreateEventType, UpdateEventType } from "@/api/schema";
 import type { Event } from "@/api/types";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://server:4000";
@@ -13,11 +14,11 @@ export interface GetEventsResponse {
 }
 
 export const getEvents = async (
-    sortBy: string = "date",
-    order: string = "asc",
+    sortBy = "date",
+    order = "asc",
     category?: string,
-    page: number = 1,
-    limit: number = 10
+    page = 1,
+    limit = 10
 ): Promise<GetEventsResponse> => {
     const url = new URL(`${BACKEND_URL}/events`);
     url.searchParams.append("sortBy", sortBy);
@@ -66,7 +67,7 @@ export const getEvent = async (id: string): Promise<Event> => {
     return res.json();
 };
 
-export const createEvent = async (data: any): Promise<Event> => {
+export const createEvent = async (data: CreateEventType): Promise<Event> => {
     const res = await fetch(`${BACKEND_URL}/events`, {
         method: "POST",
         headers: {
@@ -83,7 +84,7 @@ export const createEvent = async (data: any): Promise<Event> => {
     return res.json();
 };
 
-export const updateEvent = async (id: string, data: any): Promise<Event> => {
+export const updateEvent = async (id: string, data: UpdateEventType): Promise<Event> => {
     const res = await fetch(`${BACKEND_URL}/events/${id}`, {
         method: "PUT",
         headers: {

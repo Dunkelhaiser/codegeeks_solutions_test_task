@@ -10,20 +10,10 @@ import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 import { updateEventAction } from "@/api/actions";
 import { Category } from "@/api/events";
+import { CreateEventType, eventSchema } from "@/api/schema";
 import { Event } from "@/api/types";
-
-const eventSchema = z.object({
-    title: z.string().min(1, "Title is required").max(255, "Title must be at most 255 characters long"),
-    date: z.string().min(1, "Date is required"),
-    location: z.string().min(1, "Location is required").max(255, "Location must be at most 255 characters long"),
-    description: z.string().max(2500, "Description must be at most 2500 characters long").optional().or(z.literal("")),
-    categoryId: z.uuid("Please select a category"),
-});
-
-type EventFormValues = z.infer<typeof eventSchema>;
 
 interface EditEventFormProps {
     event: Event;
@@ -43,7 +33,7 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
         control,
         handleSubmit,
         formState: { errors, isDirty },
-    } = useForm<EventFormValues>({
+    } = useForm<CreateEventType>({
         resolver: zodResolver(eventSchema),
         defaultValues: {
             title: event.title,
@@ -54,7 +44,7 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
         },
     });
 
-    const onSubmit = async (data: EventFormValues) => {
+    const onSubmit = async (data: CreateEventType) => {
         setIsSubmitting(true);
         setServerError(null);
         try {

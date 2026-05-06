@@ -10,22 +10,9 @@ import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { createEventAction } from "@/api/actions";
 import { Category } from "@/api/events";
-
-const createEventSchema = z.object({
-    title: z.string().min(1, "Title is required").max(255, "Title must be at most 255 characters long"),
-    date: z
-        .string()
-        .min(1, "Date is required")
-        .refine((value) => new Date(value) > new Date(), "Date must be in the future"),
-    location: z.string().min(1, "Location is required").max(255, "Location must be at most 255 characters long"),
-    description: z.string().max(2500, "Description must be at most 2500 characters long").optional().or(z.literal("")),
-    categoryId: z.uuid("Please select a category"),
-});
-
-type CreateEventFormValues = z.infer<typeof createEventSchema>;
+import { CreateEventType, createEventSchema } from "@/api/schema";
 
 interface CreateEventFormProps {
     categories: Category[];
@@ -40,14 +27,14 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<CreateEventFormValues>({
+    } = useForm<CreateEventType>({
         resolver: zodResolver(createEventSchema),
         defaultValues: {
             description: "",
         },
     });
 
-    const onSubmit = async (data: CreateEventFormValues) => {
+    const onSubmit = async (data: CreateEventType) => {
         setIsSubmitting(true);
         setServerError(null);
         try {

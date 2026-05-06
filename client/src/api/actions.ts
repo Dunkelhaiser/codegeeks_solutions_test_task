@@ -1,9 +1,10 @@
 "use server";
 
-import { createEvent, deleteEvent, updateEvent } from "@/api/events";
 import { revalidatePath } from "next/cache";
+import { createEvent, deleteEvent, updateEvent } from "@/api/events";
+import { CreateEventType, UpdateEventType } from "./schema";
 
-export async function createEventAction(data: any) {
+export async function createEventAction(data: CreateEventType) {
     try {
         const result = await createEvent(data);
         revalidatePath("/");
@@ -16,7 +17,7 @@ export async function createEventAction(data: any) {
     }
 }
 
-export async function updateEventAction(id: string, data: any) {
+export async function updateEventAction(id: string, data: UpdateEventType) {
     try {
         const result = await updateEvent(id, data);
         revalidatePath("/");
