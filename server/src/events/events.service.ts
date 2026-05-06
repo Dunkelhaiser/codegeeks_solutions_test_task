@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException,  } from "@nestjs/common";
 import { db } from "../db";
-import { eventsTable } from "../db/schema";
+import { categoriesTable, eventsTable } from "../db/schema";
 import { CreateEventDto } from "./dto/createEvent.dto";
 import { UpdateEventDto } from "./dto/updateEvent.dto";
 import { eq, asc, desc } from "drizzle-orm";
@@ -16,7 +16,14 @@ export class EventsService {
     async findAll(query: GetEventsQueryDto) {
         const order = query.order === 'desc' ? desc : asc;
         
-        let q = db.select().from(eventsTable).$dynamic();
+        let q = db.select({
+            id: eventsTable.id,
+            title: eventsTable.title,
+            date: eventsTable.date,
+            location: eventsTable.location,
+            description: eventsTable.description,
+            category: categoriesTable.name,
+        }).from(eventsTable).innerJoin(categoriesTable, eq(eventsTable.categoryId, categoriesTable.id)).$dynamic();
         
         if (query.category) {
             q = q.where(eq(eventsTable.categoryId, query.category));
@@ -28,7 +35,14 @@ export class EventsService {
     }
 
     async findOne(id: string) {
-        const event = await db.select().from(eventsTable).where(eq(eventsTable.id, id));
+        const event = await db.select({
+            id: eventsTable.id,
+            title: eventsTable.title,
+            date: eventsTable.date,
+            location: eventsTable.location,
+            description: eventsTable.description,
+            category: categoriesTable.name,
+        }).from(eventsTable).innerJoin(categoriesTable, eq(eventsTable.categoryId, categoriesTable.id)).where(eq(eventsTable.id, id));
 
         if(event.length === 0) {
             throw new NotFoundException(`Event with id ${id} not found`);
