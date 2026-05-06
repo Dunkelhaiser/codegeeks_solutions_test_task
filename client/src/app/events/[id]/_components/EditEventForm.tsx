@@ -1,19 +1,19 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
-import CircularProgress from "@mui/material/CircularProgress";
-import { useRouter } from "next/navigation";
+import { updateEventAction } from "@/api/actions";
 import { Category } from "@/api/events";
 import { Event } from "@/api/types";
-import { updateEventAction } from "@/api/actions";
 
 const eventSchema = z.object({
     title: z.string().min(1, "Title is required").max(255, "Title must be at most 255 characters long"),
@@ -68,7 +68,7 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
             } else {
                 setServerError(result.error || "Failed to update event");
             }
-        } catch (error) {
+        } catch {
             setServerError("An unexpected error occurred");
         } finally {
             setIsSubmitting(false);
@@ -90,7 +90,7 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
                 id="title"
                 label="Event Title"
                 {...register("title")}
-                error={!!errors.title}
+                error={Boolean(errors.title)}
                 helperText={errors.title?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {
@@ -113,7 +113,7 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
                     },
                 }}
                 {...register("date")}
-                error={!!errors.date}
+                error={Boolean(errors.date)}
                 helperText={errors.date?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {
@@ -130,7 +130,7 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
                 id="location"
                 label="Location"
                 {...register("location")}
-                error={!!errors.location}
+                error={Boolean(errors.location)}
                 helperText={errors.location?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {
@@ -152,7 +152,7 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
                         select
                         id="categoryId"
                         label="Category"
-                        error={!!errors.categoryId}
+                        error={Boolean(errors.categoryId)}
                         helperText={errors.categoryId?.message}
                         sx={{
                             "& .MuiOutlinedInput-root": {
@@ -181,7 +181,7 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
                 id="description"
                 label="Description"
                 {...register("description")}
-                error={!!errors.description}
+                error={Boolean(errors.description)}
                 helperText={errors.description?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {
@@ -204,11 +204,11 @@ export default function EditEventForm({ event, categories, onSuccess }: EditEven
                     fontSize: "1.1rem",
                     fontWeight: 600,
                     textTransform: "none",
-                    boxShadow: !isDirty ? "none" : "0 8px 16px -4px rgba(124, 77, 255, 0.4)",
+                    boxShadow: isDirty ? "0 8px 16px -4px rgba(124, 77, 255, 0.4)" : "none",
                     "&:hover": {
-                        boxShadow: !isDirty ? "none" : "0 12px 20px -4px rgba(124, 77, 255, 0.6)",
+                        boxShadow: isDirty ? "0 12px 20px -4px rgba(124, 77, 255, 0.6)" : "none",
                     },
-                    opacity: !isDirty ? 0.6 : 1,
+                    opacity: isDirty ? 1 : 0.6,
                 }}
             >
                 {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Save Changes"}

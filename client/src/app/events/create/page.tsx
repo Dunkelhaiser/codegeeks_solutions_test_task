@@ -1,12 +1,11 @@
-import React from "react";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Link from "next/link";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CreateEventForm from "./_components/CreateEventForm";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Link from "next/link";
 import { getCategories } from "@/api/events";
+import CreateEventForm from "./_components/CreateEventForm";
 
 export default async function CreateEventPage() {
     const categories = await getCategories();

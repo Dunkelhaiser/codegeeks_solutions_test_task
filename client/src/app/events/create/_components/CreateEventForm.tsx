@@ -1,18 +1,18 @@
 "use client";
 
-import  { useState } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
-import { Category } from "@/api/events";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { createEventAction } from "@/api/actions";
+import { Category } from "@/api/events";
 
 const createEventSchema = z.object({
     title: z.string().min(1, "Title is required").max(255, "Title must be at most 255 characters long"),
@@ -57,7 +57,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
             } else {
                 setServerError(result.error || "Failed to create event");
             }
-        } catch (error) {
+        } catch {
             setServerError("An unexpected error occurred");
         } finally {
             setIsSubmitting(false);
@@ -80,7 +80,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 label="Event Title"
                 autoFocus
                 {...register("title")}
-                error={!!errors.title}
+                error={Boolean(errors.title)}
                 helperText={errors.title?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {
@@ -103,7 +103,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                     },
                 }}
                 {...register("date")}
-                error={!!errors.date}
+                error={Boolean(errors.date)}
                 helperText={errors.date?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {
@@ -120,7 +120,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 id="location"
                 label="Location"
                 {...register("location")}
-                error={!!errors.location}
+                error={Boolean(errors.location)}
                 helperText={errors.location?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {
@@ -139,7 +139,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 label="Category"
                 defaultValue=""
                 {...register("categoryId")}
-                error={!!errors.categoryId}
+                error={Boolean(errors.categoryId)}
                 helperText={errors.categoryId?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {
@@ -166,7 +166,7 @@ export default function CreateEventForm({ categories }: CreateEventFormProps) {
                 id="description"
                 label="Description"
                 {...register("description")}
-                error={!!errors.description}
+                error={Boolean(errors.description)}
                 helperText={errors.description?.message}
                 sx={{
                     "& .MuiOutlinedInput-root": {

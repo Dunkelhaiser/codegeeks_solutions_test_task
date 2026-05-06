@@ -1,15 +1,15 @@
+import AddIcon from "@mui/icons-material/Add";
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import Fab from "@mui/material/Fab";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import Link from "next/link";
 import { getCategories, getEvents } from "@/api/events";
 import EventCard from "@/components/EventCard";
-import SortControls from "./_components/SortControls";
 import FilterControls from "./_components/FilterControls";
 import PaginationControls from "./_components/PaginationControls";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import Link from "next/link";
+import SortControls from "./_components/SortControls";
 
 interface HomeProps {
     searchParams: Promise<{ sortBy?: string; order?: string; category?: string; page?: string; limit?: string }>;
@@ -17,8 +17,8 @@ interface HomeProps {
 
 export default async function Home({ searchParams }: HomeProps) {
     const { sortBy = "date", order = "asc", category, page = "1", limit = "9" } = await searchParams;
-    const currentPage = parseInt(page);
-    const pageLimit = parseInt(limit);
+    const currentPage = Number.parseInt(page, 10);
+    const pageLimit = Number.parseInt(limit, 10);
 
     const [{ events, total }, categories] = await Promise.all([
         getEvents(sortBy, order, category, currentPage, pageLimit),
@@ -31,7 +31,8 @@ export default async function Home({ searchParams }: HomeProps) {
         <Box
             sx={{
                 minHeight: "100vh",
-                background: "radial-gradient(circle at 50% 0%, rgba(124, 77, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(0, 229, 255, 0.05) 0%, transparent 40%)",
+                background:
+                    "radial-gradient(circle at 50% 0%, rgba(124, 77, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(0, 229, 255, 0.05) 0%, transparent 40%)",
                 pb: 8,
             }}
         >
@@ -67,7 +68,16 @@ export default async function Home({ searchParams }: HomeProps) {
             </Box>
 
             <Container maxWidth="lg">
-                <Box sx={{ mb: 6, display: "flex", gap: 3, flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
+                <Box
+                    sx={{
+                        mb: 6,
+                        display: "flex",
+                        gap: 3,
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
                     <FilterControls categories={categories} />
                     <SortControls />
                 </Box>
@@ -80,7 +90,7 @@ export default async function Home({ searchParams }: HomeProps) {
                 </Grid>
 
                 <PaginationControls totalPages={totalPages} currentPage={currentPage} />
-                
+
                 {events.length === 0 && (
                     <Box sx={{ textAlign: "center", py: 12 }}>
                         <Typography variant="h6" color="text.secondary">

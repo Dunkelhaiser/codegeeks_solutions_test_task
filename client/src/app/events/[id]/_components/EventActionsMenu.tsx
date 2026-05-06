@@ -1,20 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
 import { Category } from "@/api/events";
 import { Event } from "@/api/types";
-import EditEventDialog from "./EditEventDialog";
 import DeleteEventDialog from "./DeleteEventDialog";
-
-import Typography from "@mui/material/Typography";
+import EditEventDialog from "./EditEventDialog";
 
 interface EventActionsMenuProps {
     event: Event;
@@ -83,26 +82,21 @@ export default function EventActionsMenu({ event, categories }: EventActionsMenu
                     <ListItemIcon sx={{ minWidth: "32px !important" }}>
                         <EditIcon fontSize="small" color="primary" />
                     </ListItemIcon>
-                    <ListItemText 
-                        primary={<Typography sx={{ fontSize: "0.875rem", fontWeight: 500 }}>Edit</Typography>} 
+                    <ListItemText
+                        primary={<Typography sx={{ fontSize: "0.875rem", fontWeight: 500 }}>Edit</Typography>}
                     />
                 </MenuItem>
                 <MenuItem onClick={handleDeleteOpen} sx={{ py: 1, px: 2, color: "error.main" }}>
                     <ListItemIcon sx={{ minWidth: "32px !important" }}>
                         <DeleteIcon fontSize="small" color="error" />
                     </ListItemIcon>
-                    <ListItemText 
-                        primary={<Typography sx={{ fontSize: "0.875rem", fontWeight: 500 }}>Delete</Typography>} 
+                    <ListItemText
+                        primary={<Typography sx={{ fontSize: "0.875rem", fontWeight: 500 }}>Delete</Typography>}
                     />
                 </MenuItem>
             </Menu>
 
-            <EditEventDialog
-                open={editOpen}
-                onClose={handleEditClose}
-                event={event}
-                categories={categories}
-            />
+            <EditEventDialog open={editOpen} onClose={handleEditClose} event={event} categories={categories} />
 
             <DeleteEventDialog
                 open={deleteOpen}

@@ -1,18 +1,18 @@
-import { notFound } from "next/navigation";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Grid from "@mui/material/Grid";
-import Link from "next/link";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { getCategories, getEvent } from "@/api/events";
-import EventActionsMenu from "./_components/EventActionsMenu";
-import EventCard from "@/components/EventCard";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getCategories, getEvent } from "@/api/events";
+import EventCard from "@/components/EventCard";
+import EventActionsMenu from "./_components/EventActionsMenu";
 
 interface EventPageProps {
     params: Promise<{ id: string }>;
@@ -20,11 +20,8 @@ interface EventPageProps {
 
 export default async function EventPage({ params }: EventPageProps) {
     const { id } = await params;
-    
-    const [event, categories] = await Promise.all([
-        getEvent(id).catch(() => null),
-        getCategories()
-    ]);
+
+    const [event, categories] = await Promise.all([getEvent(id).catch(() => null), getCategories()]);
 
     if (!event) {
         return notFound();
@@ -64,7 +61,15 @@ export default async function EventPage({ params }: EventPageProps) {
 
                 <Grid container spacing={4}>
                     <Grid size={{ xs: 12, md: 8 }}>
-                        <Box sx={{ mb: 4, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 2 }}>
+                        <Box
+                            sx={{
+                                mb: 4,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "flex-start",
+                                gap: 2,
+                            }}
+                        >
                             <Box>
                                 <Chip
                                     label={event.category}
@@ -108,7 +113,16 @@ export default async function EventPage({ params }: EventPageProps) {
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
                                 <CalendarMonthIcon color="primary" />
                                 <Box>
-                                    <Typography variant="caption" sx={{ display: "block", color: "text.secondary", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.1em" }}>
+                                    <Typography
+                                        variant="caption"
+                                        sx={{
+                                            display: "block",
+                                            color: "text.secondary",
+                                            textTransform: "uppercase",
+                                            fontWeight: 700,
+                                            letterSpacing: "0.1em",
+                                        }}
+                                    >
                                         Date and Time
                                     </Typography>
                                     <Typography variant="body1">{formattedDate}</Typography>
@@ -117,7 +131,16 @@ export default async function EventPage({ params }: EventPageProps) {
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
                                 <LocationOnIcon color="primary" />
                                 <Box>
-                                    <Typography variant="caption" sx={{ display: "block", color: "text.secondary", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.1em" }}>
+                                    <Typography
+                                        variant="caption"
+                                        sx={{
+                                            display: "block",
+                                            color: "text.secondary",
+                                            textTransform: "uppercase",
+                                            fontWeight: 700,
+                                            letterSpacing: "0.1em",
+                                        }}
+                                    >
                                         Location
                                     </Typography>
                                     <Typography variant="body1">{event.location}</Typography>
@@ -155,9 +178,13 @@ export default async function EventPage({ params }: EventPageProps) {
                             }}
                         >
                             <iframe
+                                title="Map"
                                 width="100%"
                                 height="100%"
-                                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)" }}
+                                style={{
+                                    border: 0,
+                                    filter: "invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)",
+                                }}
                                 loading="lazy"
                                 allowFullScreen
                                 src={`https://maps.google.com/maps?q=${encodeURIComponent(event.location)}&t=&z=14&ie=UTF8&iwloc=B&output=embed`}

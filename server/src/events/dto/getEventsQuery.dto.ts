@@ -1,5 +1,5 @@
-import { createZodDto } from "nestjs-zod"
-import { z } from "zod"
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
 const getEventsQuerySchema = z.object({
     sortBy: z.enum(["title", "date"]).default("date"),
@@ -7,6 +7,6 @@ const getEventsQuerySchema = z.object({
     category: z.uuid().optional(),
     page: z.coerce.number().int().min(1).default(1),
     limit: z.coerce.number().int().min(1).max(100).default(10),
-})
+});
 
 export class GetEventsQueryDto extends createZodDto(getEventsQuerySchema) {}

@@ -111,6 +111,7 @@
                         "noReactSpecificProps": "off"
                     },
                     "correctness": {
+                        "useUniqueElementIds": "off",
                         "noProcessGlobal": "off",
                         "useImportExtensions": "off",
                         "noSolidDestructuredProps": "off",
